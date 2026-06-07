@@ -1,5 +1,7 @@
 package com.bank.atm.domain;
 
+import java.time.LocalDate;
+
 public class RandomNumberGeneratorTest {
     public static void main(String[] args) {
         long max = 4999999999999999L;
@@ -15,6 +17,7 @@ public class RandomNumberGeneratorTest {
         RandomNumberGeneratorTest creator = new RandomNumberGeneratorTest();
         System.out.println(creator.randomCardNumberIssuerGenerator());
         creator.randomBINGenerator();
+        System.out.println(creator.randomExpirationDateGenerator());
     }
 
 
@@ -62,6 +65,10 @@ public class RandomNumberGeneratorTest {
     }
 
 
+    LocalDate randomExpirationDateGenerator(){
+        LocalDate creationTime = LocalDate.now();
+        return creationTime.plusYears(4L);
+    }
 
 
 

@@ -8,7 +8,7 @@ public class Card {
     private String pin;
     private boolean blocked;
     private int failedAttempts = 0;
-    private LocalDate expirationDate;
+    private LocalDate expirationDate = randomExpirationDateGenerator();
 
     public String getCardNumber() {
         return cardNumber;
@@ -57,6 +57,15 @@ public class Card {
         this.expirationDate = expirationDate;
     }
 
+    // Constructor
+
+
+    public Card() {
+    }
+
+    public Card(String pin) {
+        this.pin = pin;
+    }
 
     String randomcardNumberGenerator(long min, long max){
         long randomCardNumber = min + (long)(Math.random() * ((max - min) + 1));
@@ -134,5 +143,14 @@ public class Card {
         }
 
     }
+
+    LocalDate randomExpirationDateGenerator(){
+        LocalDate creationTime = LocalDate.now();
+        LocalDate expirationDate = creationTime.plusYears(4L);
+        return expirationDate;
+    }
+
+
+
 
 }
