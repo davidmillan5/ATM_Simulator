@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class Card {
 
-    private String cardNumber;
+    private String cardNumber = randomCardNumberIssuerGenerator();
     private String pin;
     private boolean blocked;
     private int failedAttempts = 0;
@@ -23,7 +23,14 @@ public class Card {
     }
 
     public void setPin(String pin) {
-        this.pin = pin;
+        if(pin.length()>=4){
+            this.pin = pin;
+        }else if(pin.length() < 4){
+            System.out.println("The PIN must have 4 numbers to vi a valid PIN.");
+        }else{
+            System.out.println("The PIN must not have more than 4 digits! Try again! ");
+        }
+
     }
 
     public boolean isBlocked() {
@@ -51,8 +58,48 @@ public class Card {
     }
 
 
+    String randomcardNumberGenerator(long min, long max){
+        long randomCardNumber = min + (long)(Math.random() * ((max - min) + 1));
+        return String.valueOf(randomCardNumber);
+    }
+
+
+    String randomCardNumberIssuerGenerator() {
+        int randomBINGenerator = 1 + (int) (Math.random() * ((4 - 1) + 1));
+        //System.out.println(randomBINGenerator);
+
+        String card = "";
+        long min = 0L;
+        long max = 0L;
+        switch (randomBINGenerator) {
+            case 1:
+                min = 4042800000000000L;
+                max = 4916479999999999L;
+                card = randomcardNumberGenerator(min, max);
+                break;
+            case 2:
+                min = 5303710000000000L;
+                max = 5523369999999999L;
+                card = randomcardNumberGenerator(min, max);
+                break;
+            case 3:
+                min = 3603240000000000L;
+                max = 3603249999999999L;
+                card = randomcardNumberGenerator(min, max);
+                break;
+            case 4:
+                min = 377847000000000L;
+                max = 377847999999999L;
+                card = randomcardNumberGenerator(min, max);
+                break;
+        }
+        return card;
+    }
+
+
+
     String validatePin(String pin){
-        String message = "";
+        String message = "Access Denied";
         String actualPin = getPin();
         if(actualPin.equals(pin)){
             message = "Access Granted";
