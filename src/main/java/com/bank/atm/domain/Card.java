@@ -1,21 +1,22 @@
 package com.bank.atm.domain;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 
 public class Card {
 
-    private String cardNumber = randomCardNumberIssuerGenerator();
+    private final String cardNumber;
     private String pin;
-    private boolean blocked;
+    private boolean blocked = true;
     private int failedAttempts = 0;
     private LocalDate expirationDate = randomExpirationDateGenerator();
 
     public String getCardNumber() {
         return cardNumber;
-    }
-
-    public void setCardNumber(String cardNumber) {
-        this.cardNumber = cardNumber;
     }
 
     public String getPin() {
@@ -61,11 +62,20 @@ public class Card {
 
 
     public Card() {
+        this.cardNumber = randomCardNumberIssuerGenerator();
     }
 
     public Card(String pin) {
+        this.cardNumber = randomCardNumberIssuerGenerator();
         this.pin = pin;
     }
+
+    public Card(String cardNumber, String pin) {
+        this.cardNumber = cardNumber; // Note: You'll need to remove 'final' from the field declaration or assign it via a constructor chain
+        this.pin = pin;
+    }
+
+
 
     String randomcardNumberGenerator(long min, long max){
         long randomCardNumber = min + (long)(Math.random() * ((max - min) + 1));
@@ -107,7 +117,7 @@ public class Card {
 
 
 
-    String validatePin(String pin){
+    public String validatePin(String pin){
         String message = "Access Denied";
         String actualPin = getPin();
         if(actualPin.equals(pin)){
@@ -150,7 +160,16 @@ public class Card {
         return expirationDate;
     }
 
-
+    @Override
+    public String toString() {
+        return "Card{" +
+                "cardNumber='" + cardNumber + '\'' +
+                ", pin='" + pin + '\'' +
+                ", blocked=" + blocked +
+                ", failedAttempts=" + failedAttempts +
+                ", expirationDate=" + expirationDate +
+                '}';
+    }
 
 
 }
