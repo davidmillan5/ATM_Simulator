@@ -57,7 +57,7 @@ public class ATM {
         List<Card> cards = new Cards().getCards();
         boolean cardExists = cards
                 .stream()
-                .anyMatch(card -> card.getCardNumber() == cardInserted.getCardNumber());
+                .anyMatch(card -> card.getCardNumber().equals(cardInserted.getCardNumber()));
         if(cardExists){
             System.out.println("Which");
         }else{
