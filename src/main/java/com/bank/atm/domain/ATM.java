@@ -1,6 +1,7 @@
 package com.bank.atm.domain;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.UUID;
@@ -52,8 +53,16 @@ public class ATM {
     }
 
 
-    public String insertCard(Card card){
-
+    public String insertCard(Card cardInserted){
+        List<Card> cards = new Cards().getCards();
+        boolean cardExists = cards
+                .stream()
+                .anyMatch(card -> card.getCardNumber() == cardInserted.getCardNumber());
+        if(cardExists){
+            System.out.println("Which");
+        }else{
+            System.out.println("The card that you entered is Invalid!");
+        }
 
 
 
