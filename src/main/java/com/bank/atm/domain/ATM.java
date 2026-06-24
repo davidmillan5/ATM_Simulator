@@ -69,7 +69,9 @@ public class ATM {
         System.out.println("Transaction Completed! Card Ejected");
     }
 
-    public void validatePin(Card cardPin){
+    public Boolean validatePin(Card cardPin){
+        Boolean valid = false;
+        int cardAttempts = cardPin.getFailedAttempts();
         if(!insertCard(cardPin).isEmpty()){
             List<Card> cards = new Cards().getCards();
             boolean cardPinExists = cards
@@ -77,17 +79,30 @@ public class ATM {
                     .anyMatch(card ->
                             card.getPin().equals(cardPin.getPin())
                                     && card.getCardNumber().equals(cardPin.getCardNumber()));
-            if(cardPinExists){
-                System.out.println("Valid Client");
+            if(cardPinExists && cardAttempts < 4){
+                valid = true;
+            }else if(!cardPinExists && cardAttempts< 4){
+                cardPin.incrementFailedAttempts();
+                System.out.println("Invalid PIN.");
+                valid = false;
             }else{
-                System.out.println("Invalid PIN");
+                System.out.println("Card Blocked.");
+                valid = false;
             }
         }
+        return valid;
     }
 
 
-    public void deposit(Account account, BigDecimal amount){
-        account.deposit(amount);
+    public void deposit(Account account, BigDecimal amount, Card card){
+        getInsertedCard(card);
+        Boolean validCard = validatePin(card);
+        if(validCard){
+            account.deposit(amount);
+        }else{
+            System.out.println("Invalid Card.");
+        }
+
     }
 
     public void withdraw(Account account, BigDecimal amount){

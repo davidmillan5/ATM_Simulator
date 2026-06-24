@@ -8,7 +8,7 @@ public class Card {
 
     private final String cardNumber;
     private String pin;
-    private boolean blocked = true;
+    private boolean blocked;
     private int failedAttempts = 0;
     private LocalDate expirationDate = randomExpirationDateGenerator();
 
@@ -21,14 +21,11 @@ public class Card {
     }
 
     public void setPin(String pin) {
-        if(pin.length()>=4){
+        if(pin.length() == 4){
             this.pin = pin;
-        }else if(pin.length() < 4){
-            System.out.println("The PIN must have 4 numbers to vi a valid PIN.");
         }else{
-            System.out.println("The PIN must not have more than 4 digits! Try again! ");
+            System.out.println("The PIN must have 4 numbers to vi a valid PIN.");
         }
-
     }
 
     public boolean isBlocked() {
@@ -74,7 +71,7 @@ public class Card {
 
 
 
-    String randomcardNumberGenerator(long min, long max){
+    String randomCardNumberGenerator(long min, long max){
         long randomCardNumber = min + (long)(Math.random() * ((max - min) + 1));
         return String.valueOf(randomCardNumber);
     }
@@ -91,22 +88,22 @@ public class Card {
             case 1:
                 min = 4042800000000000L;
                 max = 4916479999999999L;
-                card = randomcardNumberGenerator(min, max);
+                card = randomCardNumberGenerator(min, max);
                 break;
             case 2:
                 min = 5303710000000000L;
                 max = 5523369999999999L;
-                card = randomcardNumberGenerator(min, max);
+                card = randomCardNumberGenerator(min, max);
                 break;
             case 3:
                 min = 3603240000000000L;
                 max = 3603249999999999L;
-                card = randomcardNumberGenerator(min, max);
+                card = randomCardNumberGenerator(min, max);
                 break;
             case 4:
                 min = 377847000000000L;
                 max = 377847999999999L;
-                card = randomcardNumberGenerator(min, max);
+                card = randomCardNumberGenerator(min, max);
                 break;
         }
         return card;
@@ -114,37 +111,39 @@ public class Card {
 
 
 
-    public String validatePin(String pin){
-        String message = "Access Denied";
+    public boolean validatePin(String pin){
+        boolean validation = false;
         String actualPin = getPin();
         if(actualPin.equals(pin)){
-            message = "Access Granted";
+            validation = true;
         }
-        return message;
+        return validation;
     }
 
-    void incrementFailedAttempts(){
-        while((getFailedAttempts() > 0 && getFailedAttempts() <= 3)){
-            if(!validatePin(pin).equals(pin)){
-                failedAttempts++;
-                setFailedAttempts(failedAttempts);
-                System.out.println("Your PIN is incorrect. Enter a valid PIN");
-            }else if(getFailedAttempts() == 3) {
+    public boolean tryPin(String attemptedPin) {
+        if (isBlocked()) {
+            System.out.println("This card is blocked.");
+            return false;
+        }
+
+        if (validatePin(attemptedPin)) {
+            resetAttempts();
+            return true;
+        } else {
+            setFailedAttempts(getFailedAttempts() + 1);
+            if (getFailedAttempts() >= 3) {
                 blocked = true;
                 block();
-            }else{
-                System.out.println("Transaction approved.");
-                resetAttempts();
-                break;
             }
+            return false;
         }
     }
 
-    void resetAttempts(){
+    public void resetAttempts(){
         setFailedAttempts(0);
     }
 
-    void block(){
+    public void block(){
         if(blocked){
             System.out.println("Your card with number " + getCardNumber() + " has being blocked!");
         }
