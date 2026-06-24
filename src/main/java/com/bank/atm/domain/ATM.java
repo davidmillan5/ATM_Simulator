@@ -2,8 +2,6 @@ package com.bank.atm.domain;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
-import java.util.Scanner;
 import java.util.UUID;
 
 public class ATM {
@@ -54,41 +52,37 @@ public class ATM {
 
 
     public String insertCard(Card cardInserted){
+        String message = "";
         List<Card> cards = new Cards().getCards();
         boolean cardExists = cards
                 .stream()
                 .anyMatch(card -> card.getCardNumber().equals(cardInserted.getCardNumber()));
         if(cardExists){
-            System.out.println("Which");
+            message = "Continue with your transactions";
         }else{
-            System.out.println("The card that you entered is Invalid!");
+            message = "The card that you entered is Invalid!";
         }
-
-
-
-
-        /**
-
-        String cardConfirmation = "";
-        if(card != null){
-            cardConfirmation = "The card number " + card.getCardNumber() + " is valid";
-        }else{
-            cardConfirmation = "You entered an invalid card.";
-        }
-        System.out.println(cardConfirmation);
-
-         **/
-
-        return "";
+        return message;
     }
 
     public void ejectcard(){
         System.out.println("Transaction Completed! Card Ejected");
     }
 
-    public void validatePin(Card card){
-
-
+    public void validatePin(Card cardPin){
+        if(!insertCard(cardPin).isEmpty()){
+            List<Card> cards = new Cards().getCards();
+            boolean cardPinExists = cards
+                    .stream()
+                    .anyMatch(card ->
+                            card.getPin().equals(cardPin.getPin())
+                                    && card.getCardNumber().equals(cardPin.getCardNumber()));
+            if(cardPinExists){
+                System.out.println("Valid Client");
+            }else{
+                System.out.println("Invalid PIN");
+            }
+        }
     }
 
 
@@ -108,5 +102,4 @@ public class ATM {
     public void printTransactionHistory(Account account){
         account.getTransactions();
     }
-
 }

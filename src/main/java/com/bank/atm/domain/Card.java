@@ -1,10 +1,7 @@
 package com.bank.atm.domain;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Random;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
 
 
 public class Card {
@@ -126,7 +123,7 @@ public class Card {
         return message;
     }
 
-    void incrementFailedAttemps(){
+    void incrementFailedAttempts(){
         while((getFailedAttempts() > 0 && getFailedAttempts() <= 3)){
             if(!validatePin(pin).equals(pin)){
                 failedAttempts++;
