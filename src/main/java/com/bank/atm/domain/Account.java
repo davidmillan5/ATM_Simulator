@@ -79,9 +79,13 @@ public class Account {
     }
 
     public void deposit(BigDecimal amount){
-        setBalance(getBalance().add(amount));
-        Transaction deposit = new Transaction(DEPOSIT, amount, "Simple Deposit");
-        addTransaction(deposit);
+        if(amount == null || amount.compareTo(BigDecimal.ZERO) > 0){
+            setBalance(getBalance().add(amount));
+            Transaction deposit = new Transaction(DEPOSIT, amount, "Simple Deposit");
+            addTransaction(deposit);
+        }else{
+            System.out.println("Invalid amount, enter a valid amount.");
+        }
     }
 
     public void withdraw(BigDecimal amount){

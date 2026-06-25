@@ -34,7 +34,7 @@ public class MainTestRunner {
 
         System.out.println(account1.getBalance());
 
-        account1.withdraw(BigDecimal.valueOf(-16000.00));
+        account1.deposit(BigDecimal.valueOf(-16000.00));
         System.out.println(account1.getBalance());
 
         System.out.println(account1.getTransactions());
