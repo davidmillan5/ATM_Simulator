@@ -4,8 +4,11 @@ import com.bank.atm.enums.AccountStatus;
 import com.bank.atm.enums.TransactionType;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import static com.bank.atm.enums.TransactionType.DEPOSIT;
 
 public class Account {
 
@@ -17,7 +20,7 @@ public class Account {
     private String ownerName;
     private BigDecimal balance = BigDecimal.valueOf(0.00);
     private AccountStatus status;
-    private List<Transaction> transactions;
+    private List<Transaction> transactions = new ArrayList<>();
 
     public String getId() {
         return id;
@@ -67,26 +70,46 @@ public class Account {
         this.transactions = transactions;
     }
 
-    void deposit(BigDecimal amount){
-        balance = getBalance().add(amount);
-        setBalance(balance);
+
+
+    public Account(String accountNumber, String ownerName, AccountStatus status) {
+        this.accountNumber = accountNumber;
+        this.ownerName = ownerName;
+        this.status = status;
     }
 
-    void withdraw(BigDecimal amount){
-        validateSufficientFunds(amount);
+    public void deposit(BigDecimal amount){
+        setBalance(getBalance().add(amount));
+        Transaction deposit = new Transaction(DEPOSIT, amount, "Simple Deposit");
+        addTransaction(deposit);
     }
 
-    void addTransaction(Transaction transaction){
-        transactions.add(transaction);
-    }
-
-    void validateSufficientFunds(BigDecimal amount){
-        if(getBalance().compareTo(amount) > 0){
-            balance = getBalance().subtract(amount);
-            setBalance(balance);
+    public void withdraw(BigDecimal amount){
+        if(validateSufficientFunds(amount)){
+            setBalance(getBalance().subtract(amount));
         }else{
             System.out.println("You don't have enough founds in your account.");
         }
     }
 
+    public void addTransaction(Transaction transaction){
+        transactions.add(transaction);
+    }
+
+    public boolean validateSufficientFunds(BigDecimal amount){
+        return getBalance().compareTo(amount) >= 0;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "id='" + id + '\'' +
+                ", accountNumber='" + accountNumber + '\'' +
+                ", ownerName='" + ownerName + '\'' +
+                ", balance=" + balance +
+                ", status=" + status +
+                ", transactions=" + transactions +
+                '}';
+    }
 }

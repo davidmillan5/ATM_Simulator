@@ -12,15 +12,13 @@ public class Transaction {
     private final String id = uuid.toString();
     private TransactionType transactionType;
     private BigDecimal amount;
-    private LocalDateTime timestamp;
+    private final LocalDateTime timestamp = LocalDateTime.now();
     private String description;
 
 
-    public Transaction(UUID uuid, TransactionType transactionType, BigDecimal amount, LocalDateTime timestamp, String description) {
-        this.uuid = uuid;
+    public Transaction(TransactionType transactionType, BigDecimal amount, String description) {
         this.transactionType = transactionType;
         this.amount = amount;
-        this.timestamp = timestamp;
         this.description = description;
     }
 
@@ -53,10 +51,6 @@ public class Transaction {
         return timestamp;
     }
 
-    public void setTimestamp(LocalDateTime timestamp) {
-        this.timestamp = timestamp;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -68,12 +62,11 @@ public class Transaction {
     @Override
     public String toString() {
         return "Transaction{" +
-                "uuid=" + uuid +
-                ", id='" + id + '\'' +
-                ", transactionType=" + transactionType +
-                ", amount=" + amount +
-                ", timestamp=" + timestamp +
-                ", description='" + description + '\'' +
+                " id= '" + id + '\'' +
+                ", transactionType= " + transactionType +
+                ", amount= " + amount +
+                ", timestamp= " + timestamp +
+                ", description= '" + description + '\'' +
                 '}';
     }
 }
