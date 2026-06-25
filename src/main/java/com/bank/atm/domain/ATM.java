@@ -68,7 +68,7 @@ public class ATM {
     public void ejectcard(){
         System.out.println("Transaction Completed! Card Ejected");
     }
-
+/*
     public Boolean validatePin(Card cardPin){
         Boolean valid = false;
         int cardAttempts = cardPin.getFailedAttempts();
@@ -104,7 +104,7 @@ public class ATM {
         }
 
     }
-
+*/
     public void withdraw(Account account, BigDecimal amount){
         account.withdraw(amount);
     }

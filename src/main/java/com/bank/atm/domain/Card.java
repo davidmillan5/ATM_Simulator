@@ -7,6 +7,7 @@ import java.time.LocalDate;
 public class Card {
 
     private final String cardNumber;
+    private String cardIssuer;
     private String pin;
     private boolean blocked;
     private int failedAttempts = 0;
@@ -21,10 +22,10 @@ public class Card {
     }
 
     public void setPin(String pin) {
-        if(pin.length() == 4){
+        if (pin != null && pin.matches("[0-9]{4}")) {
             this.pin = pin;
-        }else{
-            System.out.println("The PIN must have 4 numbers to vi a valid PIN.");
+        } else {
+            System.out.println("The PIN must be exactly 4 digits (0-9).");
         }
     }
 
@@ -52,6 +53,14 @@ public class Card {
         this.expirationDate = expirationDate;
     }
 
+    public String getCardIssuer() {
+        return cardIssuer;
+    }
+
+    public void setCardIssuer(String cardIssuer) {
+        this.cardIssuer = cardIssuer;
+    }
+
     // Constructor
 
 
@@ -69,6 +78,11 @@ public class Card {
         this.pin = pin;
     }
 
+    public Card(String cardNumber, String pin, String cardIssuer) {
+        this.cardNumber = cardNumber; // Note: You'll need to remove 'final' from the field declaration or assign it via a constructor chain
+        this.pin = pin;
+        this.cardIssuer = cardIssuer;
+    }
 
 
     String randomCardNumberGenerator(long min, long max){
@@ -79,7 +93,6 @@ public class Card {
 
     String randomCardNumberIssuerGenerator() {
         int randomBINGenerator = 1 + (int) (Math.random() * ((4 - 1) + 1));
-        //System.out.println(randomBINGenerator);
 
         String card = "";
         long min = 0L;
@@ -160,12 +173,11 @@ public class Card {
     public String toString() {
         return "Card{" +
                 "cardNumber='" + cardNumber + '\'' +
+                ", cardIssuer='" + cardIssuer + '\'' +
                 ", pin='" + pin + '\'' +
                 ", blocked=" + blocked +
                 ", failedAttempts=" + failedAttempts +
                 ", expirationDate=" + expirationDate +
                 '}';
     }
-
-
 }
